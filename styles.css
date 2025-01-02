@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "RM Mono";
+  src: local("RM Mono Regular"), local("RMMono-Regular"), url("font/RMMono-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Orbitron-Regular";
+  src: local("Orbitron Regular"), local("Orbitron-Regular"), url("font/Orbitron-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+html {
+  overscroll-behavior-y: none;
+}
+
+body {
+  background-color: #212121;
+  font-family: "Orbitron-Regular";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+canvas {
+  background-color: #000;
+  width: 100%;
+  height: 100dvh;
+}
