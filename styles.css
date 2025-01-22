@@ -8,6 +8,13 @@
   src: local("Orbitron Regular"), local("Orbitron-Regular"), url("font/Orbitron-Regular.ttf") format("truetype");
   font-display: swap;
 }
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   background-color: #212121;
   font-family: "Orbitron-Regular";
