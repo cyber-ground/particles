@@ -240,14 +240,15 @@ import {console_color,console_red,console_orange,console_yellow,console_green,
 //*                           --- BASIC PARTICLES ---
 // --------------------------------------------------------------------------------
 
-
+// numOfParticles pc100 ios60 / multiplySize pc40 ios1
+const mobile = navigator.userAgent.match(/iPhone|Android.+Mobile/);
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d', { willReadFrequently: true});
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 const particleArray = [];
-const numOfParticles = 60; //pc100 //ios60forNow
-const multiplySize = 1; //pc40 //ios1forNow
+const numOfParticles = 60; 
+const multiplySize = 1; 
 const velocity = 3;
 let hue = 50;
 const mouse = {
@@ -258,31 +259,28 @@ const mouse = {
 
 //* event -----------------------------
 
-canvas.addEventListener('click', (e) => {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
-  // createParticle();
-  console.log(particleArray.length);
-});
 canvas.addEventListener('mousemove', (e) => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
-  // createParticle();
-  // hue++;
-  // if(hue >= 360) {hue = 0}
-});
-
-canvas.addEventListener('touchmove', (e) => { 
-  mouse.x = e.touches[0].clientX; //*ios
-  mouse.y = e.touches[0].clientY;
-  // hue++;
-  // if(hue >= 360) {hue = 0}
 });
 
 canvas.addEventListener('mouseleave', (e) => {
   mouse.x = undefined;
   mouse.y = undefined;
 });
+
+canvas.addEventListener('touchmove', (e) => { 
+  mouse.x = e.touches[0].clientX; 
+  mouse.y = e.touches[0].clientY;
+  // hue++;
+  // if(hue >= 360) {hue = 0}
+});
+
+canvas.addEventListener('touchend', (e) => { 
+  mouse.x = undefined; 
+  mouse.y = undefined;
+});
+
 
 window.addEventListener('resize', () => {
   canvas.width = innerWidth;
@@ -314,7 +312,7 @@ class Particle {
       x: (Math.random() - 0.5) * velocity,
       y: (Math.random() - 0.5) * velocity,
     }
-    this.mass = 1; //*** */
+    this.mass = 1; //*** absolute */
     this.pv = Math.random()/1000; //* plus value
     this.color = `hsl(${hue}, 100%, 50%)`;
     this.ease = 0.5;
@@ -375,9 +373,9 @@ class Particle {
     this.x += this.velocity.x;
     this.y += this.velocity.y;
     this.radius += this.pv;
-    if(this.radius > multiplySize+1) { this.pv = -Math.random()/1000 }
-    //*pc/multiplySize+2/ios/multiplySize+1
-    if(this.radius < 0.5) { this.pv = Math.random()/1000 } 
+    if(this.radius > (mobile ? multiplySize+1 : multiplySize+2)) 
+      { this.pv = -Math.random()/1000 }
+    if(this.radius < 0.5) { this.pv = Math.random()/1000 } //*>
     // if(this.radius > 0.2) { this.radius -= 0.1 } //* shrink
   }
 }
@@ -385,11 +383,19 @@ class Particle {
 
 //* function -----------------------------
 
+// canvas.addEventListener('click', (e) => {
+//   mouse.x = e.clientX;
+//   mouse.y = e.clientY;
+//   createParticle();
+//   console.log(particleArray.length);
+// });
+
 // function createParticle() {
 //   for (let i = 0; i < numOfParticles; i++) {
 //     particleArray.push(new Particle(ctx));
 //   }
 // } createParticle();
+
 
 //* create particle with no collision ---
 //* NEED constructor(ctx, x, y, radius)  
@@ -421,23 +427,24 @@ function handleParticle() {
       const dx = particle.x - target.x;
       const dy = particle.y - target.y;
       const distance = Math.sqrt(dx*dx+dy*dy);
-      
-      if(distance < 100) { //**** draw line between particles */ distance/pc200/ios100
+      //* draw line between particles */ 
+      if(distance < (mobile ? 100 : 200)) { 
         ctx.beginPath();
         ctx.strokeStyle = particle.color;
-        ctx.lineWidth = particle.radius/10;//pc/radius/10 //ios/radius/30
+        ctx.lineWidth = particle.radius/10;
         ctx.moveTo(particle.x, particle.y);
         ctx.lineTo(target.x, target.y);
         ctx.stroke();
         ctx.closePath(); 
       }
     });
-    if(particle.radius < 0.3) { particleArray.splice(index, 1) } //* delete index
-    if(particleArray.length < numOfParticles) { //* add new particle
-      for (let i = 0; i < numOfParticles - particleArray.length; i++) {
-        particleArray.push(new Particle(ctx));
-      }
-    }
+    //* no need activate with resolveCollision
+    // if(particle.radius < 0.5) { particleArray.splice(index, 1) } //* delete index
+    // if(particleArray.length < numOfParticles) { //* add new particle
+    //   for (let i = 0; i < numOfParticles - particleArray.length; i++) { //*>
+    //     particleArray.push(new Particle(ctx, canvas.width/2, canvas.height/2, multiplySize*3));
+    //   }
+    // }
   });
 }
 
@@ -449,9 +456,9 @@ function handleParticle() {
     handleParticle();
     hue += 0.05;
     if(hue >= 360) {hue = 0}
+    requestAnimationFrame(animate);
     // console.log(hue);
     // console.log(particleArray.length);
-    requestAnimationFrame(animate);
   } 
   animate(); 
 
