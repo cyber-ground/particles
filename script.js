@@ -201,9 +201,10 @@ import {console_color,console_red,console_orange,console_yellow,console_green,
   //     });
   //     if(particle.radius < 0.3) { particleArray.splice(index, 1) } //* delete index
   //     if(particleArray.length < numOfParticles) { //* add new particle
-  //       for (let i = 0; i < numOfParticles - particleArray.length; i++) {
-  //         particleArray.push(new Particle(ctx));
-  //       }
+        // for (let i = 0; i < numOfParticles - particleArray.length; i++) {
+        //   let radius = Math.random() * multiplySize;
+        //   particleArray.push(new Particle(ctx, canvas.width/2, canvas.height/2, radius));
+        // }
   //     }
   //   });
   // }
@@ -375,7 +376,7 @@ class Particle {
     this.radius += this.pv;
     if(this.radius > (mobile ? multiplySize+1 : multiplySize+2)) 
       { this.pv = -Math.random()/1000 }
-    if(this.radius < 0.5) { this.pv = Math.random()/1000 } //*>
+    if(this.radius < 1) { this.pv = Math.random()/1000 } //*>
     // if(this.radius > 0.2) { this.radius -= 0.1 } //* shrink
   }
 }
