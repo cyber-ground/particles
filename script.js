@@ -270,11 +270,14 @@ canvas.addEventListener('mouseleave', (e) => {
   mouse.y = undefined;
 });
 
+canvas.addEventListener('touchstart', (e) => { 
+  e.preventDefault();
+});
+
 canvas.addEventListener('touchmove', (e) => { 
   mouse.x = e.touches[0].clientX; 
   mouse.y = e.touches[0].clientY;
-  // hue++;
-  // if(hue >= 360) {hue = 0}
+  // hue++; if(hue >= 360) {hue = 0}
 });
 
 canvas.addEventListener('touchend', (e) => { 
