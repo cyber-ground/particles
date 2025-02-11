@@ -272,6 +272,8 @@ canvas.addEventListener('mouseleave', (e) => {
 
 canvas.addEventListener('touchstart', (e) => { 
   e.preventDefault();
+  mouse.x = e.touches[0].clientX; 
+  mouse.y = e.touches[0].clientY;
 });
 
 canvas.addEventListener('touchmove', (e) => { 
